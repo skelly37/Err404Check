@@ -18,6 +18,7 @@ def main():
     line = filer.readline()
     count = 0
     existing_links = []
+    bad_links = []
 
     #getting number of records to display the progress
     records = 0
@@ -37,13 +38,12 @@ def main():
             site = urllib.request.urlopen(request)
             existing_links.append(line)
         except urllib.error.HTTPError:
-            pass
+            bad_links.append(line)
 
         #displaying script's progress
         os.system('clear')
         count += 1
         print('Progress: ', count, '/', records, '  (', format((count/records)*100, '5.2f'), '%)', sep='' )
-        print(bad_links)
         line = filer.readline().strip()
 
     filer.close()
@@ -54,5 +54,6 @@ def main():
         filew.write(existing_links[count] + '\n')
 
     filew.close()
+    print('Invalid links:\n', bad_links)
 
 main()
